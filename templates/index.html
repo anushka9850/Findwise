@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Findwise | Live product discovery</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="shell topbar"><a class="brand" href="/"><span class="brand-mark">fw</span> findwise</a><nav class="nav"><a href="/">Home</a><a href="#trending">Trending</a><a href="/why-us">Why us</a><a href="/contact">Contact</a><button class="theme-toggle" type="button" onclick="toggleTheme()">◐ Theme</button></nav></header>
+  <main class="shell">
+    <section class="hero"><div><div class="eyebrow">Live catalog + Kaggle intelligence</div><h1>Find the next thing you’ll love.</h1><p class="hero-copy">Shop a live product feed, then discover close matches from a 4,090-item Kaggle catalogue using content-based machine learning.</p></div><div class="stats"><div class="stat"><strong>{{ product_count | format_number }}</strong><span>products indexed</span></div><div class="stat"><strong>LIVE</strong><span>catalog sync</span></div></div></section>
+    <section class="search-panel" id="how"><form action="/recommendations" method="get"><label for="prod">What are you shopping for?</label><div class="search-row"><input id="prod" name="prod" list="products" placeholder="Try “OPI Infinite Shine”" required><datalist id="products">{% for product in trending_products %}<option value="{{ product.name }}">{% endfor %}</datalist><select name="nbr" aria-label="Number of recommendations"><option value="4">4 picks</option><option value="8" selected>8 picks</option><option value="12">12 picks</option><option value="16">16 picks</option></select><button class="primary" type="submit">Discover →</button></div></form></section>
+    <section class="live-section"><div class="section-head"><div><div class="kicker">Fresh from the network</div><h2>Live picks</h2></div><div class="live-controls"><span class="section-note live-status" id="liveStatus">● {{ live_status }}</span><button class="refresh-button" type="button" onclick="refreshLiveProducts(this)">↻ Refresh</button></div></div><div class="grid" id="liveGrid">{% for product in live_products %}{% include '_card.html' %}{% endfor %}</div></section>
+    <section id="trending"><div class="section-head"><div><div class="kicker">Signal, not noise</div><h2>Trending right now</h2></div><span class="section-note">Curated from the supplied Kaggle dataset</span></div><div class="filters"><select id="brandFilter" aria-label="Filter by brand" onchange="filterCards()"><option value="">All brands</option>{% for brand in brands %}<option value="{{ brand | lower }}">{{ brand | title }}</option>{% endfor %}</select><select id="categoryFilter" aria-label="Filter by category" onchange="filterCards()"><option value="">All categories</option>{% for category in categories %}<option value="{{ category | lower }}">{{ category }}</option>{% endfor %}</select></div><div class="grid" id="productGrid">{% for product in trending_products %}{% include '_card.html' %}{% endfor %}</div></section>
+  </main>
+  <footer><div class="shell">Findwise / A small, clear window into a big catalogue.</div></footer>
+  <script src="{{ url_for('static', filename='ui.js') }}"></script>
+</body>
+</html>

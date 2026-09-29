@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Findwise | Your recommendations</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="shell topbar"><a class="brand" href="/"><span class="brand-mark">fw</span> findwise</a><nav class="nav"><a href="/">Home</a><a href="/#trending">Trending</a><a href="/why-us">Why us</a><a href="/contact">Contact</a><button class="theme-toggle" type="button" onclick="toggleTheme()">◐ Theme</button></nav></header>
+  <main class="shell"><section class="hero"><div><div class="eyebrow">Similarity report / {{ count }} results</div><h1>Because you liked <em>{{ selected_product | short_name(42) }}</em>.</h1><p class="hero-copy">These products are ranked by the language they share with your starting pick: category, brand, ingredients, and product descriptors from the Kaggle catalogue.</p></div><div class="stats"><div class="stat"><strong>{{ recommendations | length }}</strong><span>matches found</span></div><div class="stat"><strong>{{ product_count }}</strong><span>products searched</span></div></div></section><section class="search-panel"><form action="/recommendations" method="get"><label for="prod">Refine your starting point</label><div class="search-row"><input id="prod" name="prod" value="{{ selected_product }}" required><input type="hidden" name="nbr" value="{{ count }}"><button class="primary" type="submit">Recalculate →</button></div></form></section><section><div class="section-head"><div><div class="kicker">Your shortlist</div><h2>Good places to go next</h2></div><span class="section-note">Higher match % means closer language similarity</span></div>{% if recommendations %}<div class="grid">{% for product in recommendations %}{% include '_card.html' %}{% endfor %}</div>{% else %}<div class="empty"><strong>No exact product match yet.</strong>Try selecting a complete product name from the home page, or search for a longer version of the title.</div>{% endif %}</section></main><footer><div class="shell">Findwise / Built from the project’s supplied Walmart Kaggle export.</div></footer><script src="{{ url_for('static', filename='ui.js') }}"></script>
+</body>
+</html>
